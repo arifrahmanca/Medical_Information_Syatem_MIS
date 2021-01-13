@@ -18,7 +18,12 @@
 </head>
 <body>
 	<div class="container">
-		<p> Welcome to Medical Information System. </p><br/>
+		<div class="logo-title">
+			<img src="${pageContext.request.contextPath}/images/003.png"/>
+		</div>
+		<div class="site-title"> 
+			<p> Medical Information System </p>
+		</div>
 	</div>
 	<div class="patients">
 		<c:forEach items="${patients}" var="p">
@@ -34,6 +39,9 @@
 			<p>Email: ${p.email}</p>
 			<p>Phone: ${p.phone}</p>			
 		</c:forEach>
+	</div>
+	<div class="logo-bottom">
+			<img src="${pageContext.request.contextPath}/images/005.jpg"/>
 	</div>
 </body>
 </html>
