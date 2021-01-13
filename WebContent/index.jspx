@@ -22,7 +22,21 @@
 			<img src="${pageContext.request.contextPath}/images/003.png"/>
 		</div>
 		<div class="site-title"> 
-			<p> Medical Information System </p>
+			<a href="${pageContext.request.contextPath}/Mis">Medical Information System</a>
+		</div>
+		<div class="login-logout">
+			<c:choose>
+				<c:when test="${isLogged}">
+					<form action="Mis" method="POST">
+						<button name="logoutNav" id="logoutNav" value="true">Logout</button>
+					</form>
+				</c:when>
+				<c:otherwise>
+					<form action="Mis" method="POST">
+						<button name="loginNav" id="loginNav" value="true">Login</button>
+					</form>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</div>
 	<div class="patients">

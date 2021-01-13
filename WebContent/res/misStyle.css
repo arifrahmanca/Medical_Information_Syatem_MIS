@@ -5,6 +5,39 @@
 	text-decoration:none;
 }
 
+legend {
+	font-size: 120%;
+	padding-left: 1em;
+	padding-right: 1em;
+	border: 1px solid black;
+	font-weight: bold;
+	height: 30px;
+	margin-left: 10px;
+	background: #00e6e6;
+}
+		
+button {
+	border-radius: 3px;
+   	background-color: #00cccc;
+    color: white;
+    border: white;
+    display:block;
+    text-align: center;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    margin: 16px auto !important;
+    text-decoration: none;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+Button:hover {
+	background-color:#0099cc;
+	color: white;
+}	
+
 .container {
 	width:100%;
 	height:70px;
@@ -19,7 +52,7 @@
 	margin-left: 30px;
 }
 
-.site-title p {
+.site-title a {
 	font-weight: bold;
 	font-size: 25px;
 	color:#e60000;
@@ -36,9 +69,29 @@
 	overflow: hidden;
 }
 
+.login-logout {
+	float: right;
+	font-weight: bold;
+	font-size: 25px;
+	color:#e60000;
+	margin-right: 30px;
+	margin-top: 5px;
+}
+
+.login-logout button{
+	width: 80px;
+	height: 30px;
+	font-weight: bold;
+	font-size: 20px;	
+	font-family: inherit;
+	color: #e60000;
+	border: 1px solid #0099cc;
+	text-align: center;
+}
+
 .logo-bottom {
 	overflow: hidden;
-	margin-top: 200px;
+	margin-top: 50px;
 }
 
 .patients {
