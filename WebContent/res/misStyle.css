@@ -1,0 +1,47 @@
+*{
+	margin:0;
+	padding:0;
+	list-style:none;
+	text-decoration:none;
+}
+
+.container {
+	width:100%;
+	height:70px;
+	display:block;
+	background-color:#0099cc;
+}
+
+.site-title {
+	float: left;
+	display: inline-block;
+	margin-top: 20px;
+	margin-left: 30px;
+}
+
+.site-title p {
+	font-weight: bold;
+	font-size: 25px;
+	color:#e60000;
+}
+
+.logo-title {
+	float: left;
+	display: inline-block
+}
+
+.logo-title img {
+	width: 100px;
+	margin-left: 50px;
+	overflow: hidden;
+}
+
+.logo-bottom {
+	overflow: hidden;
+	margin-top: 200px;
+}
+
+.patients {
+	margin-top: 50px;
+	margin-left: 50px;
+}
