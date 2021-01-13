@@ -45,6 +45,14 @@ public class Mis extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String loginNav = request.getParameter("loginNav");
+		String loginButton = request.getParameter("login-button");
+		boolean isLogged = false;
+		
+		if (loginButton != null) {
+			isLogged = true;
+		}
+		
 		List<PatientBean> patients = new ArrayList<PatientBean>();
 		try {
 			patients = model.getAllPatients();
@@ -53,7 +61,13 @@ public class Mis extends HttpServlet {
 			e.printStackTrace();
 		}
 		request.setAttribute("patients", patients);
-		request.getRequestDispatcher("/index.jspx").forward(request, response);
+		request.setAttribute("isLogged", isLogged);
+		
+		if (loginNav != null) {
+			request.getRequestDispatcher("/Login.jspx").forward(request, response);
+		} else {
+			request.getRequestDispatcher("/index.jspx").forward(request, response);
+		}
 	}
 
 	/**
