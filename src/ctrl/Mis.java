@@ -47,11 +47,12 @@ public class Mis extends HttpServlet {
 		// TODO Auto-generated method stub
 		String loginNav = request.getParameter("loginNav");
 		String loginButton = request.getParameter("login-button");
+		String logoutButton = request.getParameter("logoutNav");
 		boolean isLogged = false;
 		
-		if (loginButton != null) {
-			isLogged = true;
-		}
+		if (logoutButton != null) {
+			isLogged = false;
+		} 
 		
 		List<PatientBean> patients = new ArrayList<PatientBean>();
 		try {
@@ -61,10 +62,13 @@ public class Mis extends HttpServlet {
 			e.printStackTrace();
 		}
 		request.setAttribute("patients", patients);
-		request.setAttribute("isLogged", isLogged);
 		
 		if (loginNav != null) {
 			request.getRequestDispatcher("/Login.jspx").forward(request, response);
+		} else if (loginButton != null) {
+			isLogged = true;
+			request.setAttribute("isLogged", isLogged);
+			request.getRequestDispatcher("/index.jspx").forward(request, response);
 		} else {
 			request.getRequestDispatcher("/index.jspx").forward(request, response);
 		}
