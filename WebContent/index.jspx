@@ -43,7 +43,7 @@
 		<c:forEach items="${patients}" var="p">
 			<p>First Name: ${p.firstName}</p>
 			<p>Last Name: ${p.lastName}</p>
-			<p>Age: ${p.age}</p>
+			<p>Age: ${p.age} years</p>
 			<p>Address:</p>
 			<p>Street: ${p.address.street}</p>
 			<p>City: ${p.address.city}</p>

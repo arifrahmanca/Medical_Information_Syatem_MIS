@@ -166,13 +166,34 @@ function validateRegistration() {
 			float: right;
 			margin-right: 120px;
 		}
+		
+		.phone input {
+			margin-top: 2px;
+		}
+		
+		.email input,
+		.email label {
+			margin-top: 25px;
+		}
+		
+		.email input {
+			margin-left: 20px;
+			width: 180px;
+		}
 		.createAccountButton {
 			width: 550px;
 			height: 40px;
-		}		
+		}	
+		
+		.failedSignup {
+			margin-left: 10px;
+			font-weight: bold;
+			color: red;
+			font-size: 20px;
+		}	
 </STYLE>
 
-<title>Login</title>
+<title>Sign Up</title>
 </head>
 <body>
 	<div class="container">
@@ -202,9 +223,14 @@ function validateRegistration() {
 		<form action="Mis" method="POST" onsubmit="return validateRegistration();">
 				<fieldset>
 				<legend>Create Account</legend><br/>
-					<label for="username">Username<small>*</small></label><br/>
-					<input type="text" name="registerUsername" id="registerUsername"></input><br/><br/>
-					<label for="username">Password<small>*</small></label><br/>
+					<c:choose>
+						<c:when test="${isFailedSignup}">
+							<p class="failedSignup">Username already exists. Please select another username.</p><br/>
+						</c:when>
+					</c:choose>
+					<label for="username">Username<small>*</small></label>
+					<input type="text" name="registerUsername" id="registerUsername"></input>
+					<label for="password">Password<small>*</small></label>
 					<input type="password" name="registerPassword" id="registerPassword"></input><br/><br/>
 					<p style="font-weight: bold; margin-left: 10px;">Address Details:</p><br/>
 					<p class="fName">
@@ -219,7 +245,7 @@ function validateRegistration() {
 						<label for="streetNumber">Address (Street Number)<small>*</small></label><br/>
 						<input type="text" name="registerStreet" id="registerStreet"></input><br/><br/>
 						<label for="username">Address Line 2</label><br/>
-						<input type="text" name="registerAddress2" id="registerAddress2"></input>
+						<input type="text" name="registerStreet2" id="registerStreet2"></input>
 					</p>
 					<p class="city"><br/>
 						<label for="username">City<small>*</small></label><br/>
@@ -249,7 +275,11 @@ function validateRegistration() {
 					<p class="phone"><br/>
 						<label for="phone">Phone Number</label><br/>
 						<input type="text" name="registerPhone" id="registerPhone"></input>
-					</p><br/><br/><br/><br/><br/>
+					</p>
+					<p class="email">
+						<label for="email">E-mail:</label>
+						<input type="text" name="email" id="email"></input>
+					</p><br/>
 					<button name="createAccountButton" id="createAccountButton" value="true" class="createAccountButton">Create Account</button>
 				</fieldset>
 			</form>
