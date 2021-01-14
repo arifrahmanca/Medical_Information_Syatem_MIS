@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import bean.PatientBean;
+import bean.UserBean;
 import model.MIS;
 
 /**
@@ -22,7 +23,13 @@ import model.MIS;
 public class Mis extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MIS model;
-       
+	
+	private String loginUsername;
+    private String loginPassword;
+    boolean isLogged = false;
+    boolean isLoginFailed = true;
+    boolean isFailedSignup = false;
+    
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -48,28 +55,43 @@ public class Mis extends HttpServlet {
 		String loginNav = request.getParameter("loginNav");
 		String loginButton = request.getParameter("login-button");
 		String logoutButton = request.getParameter("logoutNav");
-		boolean isLogged = false;
+		String createAccountButton = request.getParameter("createAccountButton");
+		loginUsername = request.getParameter("login-user-name");
+		loginPassword = request.getParameter("login-password");
 		
 		if (logoutButton != null) {
 			isLogged = false;
+			isLoginFailed = true;
 		} 
 		
-		List<PatientBean> patients = new ArrayList<PatientBean>();
-		try {
-			patients = model.getAllPatients();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		request.setAttribute("patients", patients);
-		
+		// Redirection to corresponding pages
 		if (loginNav != null) {
 			request.getRequestDispatcher("/Login.jspx").forward(request, response);
 		} else if (loginButton != null) {
-			isLogged = true;
+			validateLogin();
 			request.setAttribute("isLogged", isLogged);
-			request.getRequestDispatcher("/index.jspx").forward(request, response);
-		} else {
+			request.setAttribute("isLoginFailed", isLoginFailed);
+			if (isLogged) {
+				request.getRequestDispatcher("/index.jspx").forward(request, response);
+			} else {
+				request.getRequestDispatcher("/Login.jspx").forward(request, response);
+			}
+		} else if (createAccountButton != null) {
+			try {
+				createAccount(request);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			request.setAttribute("isFailedSignup", isFailedSignup);
+			
+			if (isFailedSignup) {
+				request.getRequestDispatcher("/SignUp.jspx").forward(request, response);
+			} else {
+				request.getRequestDispatcher("/Login.jspx").forward(request, response);
+			}
+		}
+		else {
 			request.getRequestDispatcher("/index.jspx").forward(request, response);
 		}
 	}
@@ -81,5 +103,73 @@ public class Mis extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
+	
+	private List<PatientBean> getPatients(HttpServletRequest request) {
+		List<PatientBean> patients = new ArrayList<PatientBean>();
+		try {
+			patients = model.getAllPatients();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		request.setAttribute("patients", patients);
+		return patients;
+	}
+	
+	private List<UserBean> getUsers(){
+		List<UserBean> users = new ArrayList<UserBean>();
+		try {
+			users = model.retrieveAllUsers();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return users;
+	}
+	
+	private void validateLogin() {
+		List<UserBean> users = getUsers();
+		UserBean user = new UserBean(loginUsername, loginPassword);
+		for (UserBean ub : users) {
+			if (user.getUsername().equals(ub.getUsername()) && user.getPassword().equals(ub.getPassword())) {
+				isLoginFailed = false;
+				isLogged = true;
+			}
+		}
+	}
+	
+	private boolean isUserExist(String username) {
+		List<UserBean> users = getUsers();
+		for (UserBean user : users) {
+			if (user.getUsername().equals(username)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private void createAccount(HttpServletRequest request) throws SQLException {
+		String registerUsername = request.getParameter("registerUsername");
+		String registerPassword = request.getParameter("registerPassword");
+		String firstName = request.getParameter("registerFirstName");
+		String lastName = request.getParameter("registerLastName");
+		String street1 = request.getParameter("registerStreet");
+		String street2 = request.getParameter("registerStreet2");
+		String street = street1 + "\n" + street2;
+		String city = request.getParameter("registerCity");
+		String province = request.getParameter("registerProvince");
+		String zip = request.getParameter("registerPostalCode");
+		String country = request.getParameter("registerCountry");
+		String phone = request.getParameter("registerPhone");
+		String email = request.getParameter("email");
+		
+		if (isUserExist(registerUsername)) {
+			isFailedSignup = true;
+		} else {
+			isFailedSignup = false;
+			model.getUserData().insertUser(registerUsername, registerPassword);
+			model.getPatientData().insertAddress(street, city, province, zip, country);
+			model.getPatientData().insertPatient(firstName, lastName, phone, email);
+		}
+	}
 }

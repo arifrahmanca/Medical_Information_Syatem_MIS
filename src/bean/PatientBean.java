@@ -3,18 +3,16 @@ package bean;
 public class PatientBean {	
 	private String lastName;
 	private String firstName;
-	private int age;
-	private AddressBean address;
 	private String email;
 	private String phone;
+	private AddressBean address;
 	
-	public PatientBean(String lName, String fName, int age, AddressBean address, String email, String phone) {		
+	public PatientBean(String lName, String fName, String email, String phone, AddressBean address) {		
 		this.lastName = lName;
 		this.firstName = fName;
-		this.age = age;
-		this.address = address;
 		this.email = email;
 		this.phone = phone;
+		this.address = address;
 	}
 
 	public String getFirstName() {
@@ -33,22 +31,6 @@ public class PatientBean {
 		this.lastName = lastName;
 	}
 
-	public int getAge() {
-		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	}
-
-	public AddressBean getAddress() {
-		return address;
-	}
-
-	public void setAddress(AddressBean address) {
-		this.address = address;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -63,5 +45,13 @@ public class PatientBean {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public AddressBean getAddress() {
+		return address;
+	}
+
+	public void setAddress(AddressBean address) {
+		this.address = address;
 	}
 }

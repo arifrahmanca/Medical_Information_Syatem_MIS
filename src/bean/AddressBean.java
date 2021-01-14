@@ -6,6 +6,7 @@ public class AddressBean {
 	private String province;
 	private String zip;
 	private String country;
+	private static int addressID = 0;
 	
 	public AddressBean(String street, String city, String province, String zip, String country) {
 		this.street = street;
@@ -53,5 +54,13 @@ public class AddressBean {
 
 	public void setCountry(String country) {
 		this.country = country;
+	}
+
+	public static void incrementAddressID() {
+		addressID++;
+	}
+	
+	public static int getAddressID() {
+		return addressID;
 	}
 }

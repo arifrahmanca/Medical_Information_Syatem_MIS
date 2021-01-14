@@ -61,18 +61,54 @@ public class PatientDAO {
 		while (r.next()) {
 			String lastName = r.getString("LNAME");
 			String firstName = r.getString("FNAME");
-			int age = r.getInt("AGE");
-			int id = r.getInt("ADDRESS");
-			AddressBean address = retrieveAddressById(id);
 			String email = r.getString("EMAIL");
 			String phone = r.getString("PHONE");
+			int id = r.getInt("ADDRESSID");
+			AddressBean address = retrieveAddressById(id);
 	
-			PatientBean pb = new PatientBean(lastName, firstName, age, address, email, phone);
+			PatientBean pb = new PatientBean(lastName, firstName, email, phone, address);
 			patients.add(pb);
 		}
 		r.close();
 		p.close();
 		con.close();
 		return patients;
+	}
+	
+	public int insertAddress(String street, String city, String province, String zip, String country) throws SQLException {
+		AddressBean.incrementAddressID();
+		String query = "INSERT INTO ADDRESS (STREET, CITY, PROVINCE, ZIP, COUNTRY) VALUES (?,?,?,?,?)";
+			
+		Connection con = (Connection) this.ds.getConnection();
+		PreparedStatement p = con.prepareStatement(query);
+			
+		p.setString(1, street);
+		p.setString(2, city);
+		p.setString(3, province);
+		p.setString(4, zip);
+		p.setString(5, country);
+			
+		int i = p.executeUpdate();			
+		con.close();			
+		return i;
+	}
+
+	public int insertPatient(String lName, String fName, String phone, String email) throws SQLException {
+		String query = "INSERT INTO PATIENT (LNAME, FNAME, PHONE, EMAIL, ADDRESSID) VALUES (?,?,?,?,?)";
+			
+		Connection con = (Connection) this.ds.getConnection();
+		PreparedStatement p = con.prepareStatement(query);
+		int addressId = AddressBean.getAddressID();
+		
+		p.setString(1, lName);
+		p.setString(2, fName);
+		p.setString(3, email);
+		p.setString(4, phone);
+		p.setInt(5, addressId);
+			
+		int i = p.executeUpdate();			
+		con.close();	
+		
+		return i;
 	}
 }
