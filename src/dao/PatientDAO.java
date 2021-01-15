@@ -14,7 +14,6 @@ import bean.AddressBean;
 import bean.PatientBean;
 
 public class PatientDAO {
-	private DataSource ds;
 	Connection con;
 	String url = "jdbc:db2://dashdb-txn-sbox-yp-dal09-08.services.dal.bluemix.net:50000/BLUDB";
 	String user = "sgr65162";
@@ -34,10 +33,6 @@ public class PatientDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} 
-	}
-	
-	public DataSource getDS() {
-		return this.ds;
 	}
 	
 	public AddressBean retrieveAddressById(int id) throws SQLException {
@@ -83,7 +78,6 @@ public class PatientDAO {
 	}
 	
 	public int insertAddress(String street, String city, String province, String zip, String country) throws SQLException {
-		AddressBean.incrementAddressID();
 		String query = "INSERT INTO ADDRESS (STREET, CITY, PROVINCE, ZIP, COUNTRY) VALUES (?,?,?,?,?)";
 		PreparedStatement p = con.prepareStatement(query);
 			
@@ -93,22 +87,20 @@ public class PatientDAO {
 		p.setString(4, zip);
 		p.setString(5, country);
 			
-		int i = p.executeUpdate();					
+		int i = p.executeUpdate();
 		return i;
 	}
 
 	public int insertPatient(String lName, String fName, String phone, String email) throws SQLException {
-		String query = "INSERT INTO PATIENT (LNAME, FNAME, PHONE, EMAIL, ADDRESSID) VALUES (?,?,?,?,?)";
+		String query = "INSERT INTO PATIENT (LNAME, FNAME, PHONE, EMAIL) VALUES (?,?,?,?)";
 		PreparedStatement p = con.prepareStatement(query);
-		int addressId = AddressBean.getAddressID();
 		
 		p.setString(1, lName);
 		p.setString(2, fName);
-		p.setString(3, email);
-		p.setString(4, phone);
-		p.setInt(5, addressId);
+		p.setString(3, phone);
+		p.setString(4, email);
 			
-		int i = p.executeUpdate();				
+		int i = p.executeUpdate();	
 		return i;
 	}
 }

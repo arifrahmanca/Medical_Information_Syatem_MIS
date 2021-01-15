@@ -8,11 +8,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ibm.db2.cmx.runtime.internal.repository.api.DataManager;
+
 import bean.UserBean;
 
 public class UserDAO {
 	private Connection con;
-	
 	private String url = "jdbc:db2://dashdb-txn-sbox-yp-dal09-08.services.dal.bluemix.net:50000/BLUDB";
 	private String user = "sgr65162";
 	private String password = "7-z7882xkzvpmxth";
@@ -25,7 +26,7 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 
-//		// Create Connection
+		// Create Connection
 		try {
 			con = DriverManager.getConnection(url, user, password);
 		} catch (SQLException e) {
@@ -57,7 +58,7 @@ public class UserDAO {
 		
 		p.setString(1, username);
 		p.setString(2, password);		
-		int i = p.executeUpdate();			
+		int i = p.executeUpdate();
 		return i;
 	}
 }

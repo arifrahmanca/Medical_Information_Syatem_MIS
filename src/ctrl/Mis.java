@@ -24,7 +24,7 @@ public class Mis extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MIS model;
 	
-	private String loginUsername;
+	private String loginUsername; 
     private String loginPassword;
     boolean isLogged = false;
     boolean isLoginFailed = true;
@@ -159,7 +159,7 @@ public class Mis extends HttpServlet {
 		String city = request.getParameter("registerCity");
 		String province = request.getParameter("registerProvince");
 		String zip = request.getParameter("registerPostalCode");
-		String country = request.getParameter("registerCountry");
+		String country = request.getParameter("registerCountry"); 
 		String phone = request.getParameter("registerPhone");
 		String email = request.getParameter("email");
 		
@@ -167,9 +167,9 @@ public class Mis extends HttpServlet {
 			isFailedSignup = true;
 		} else {
 			isFailedSignup = false;
+			model.getPatientData().insertPatient(firstName, lastName, phone, email);
 			model.getUserData().insertUser(registerUsername, registerPassword);
 			model.getPatientData().insertAddress(street, city, province, zip, country);
-			model.getPatientData().insertPatient(firstName, lastName, phone, email);
 		}
 	}
 }
