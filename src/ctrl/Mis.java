@@ -113,7 +113,7 @@ public class Mis extends HttpServlet {
 			e.printStackTrace();
 		}
 		request.setAttribute("patients", patients);
-		return patients; 
+		return patients;
 	}
 	
 	private List<UserBean> getUsers(){
@@ -158,7 +158,7 @@ public class Mis extends HttpServlet {
 		String street = street1 + "\n" + street2;
 		String city = request.getParameter("registerCity");
 		String province = request.getParameter("registerProvince");
-		String zip = request.getParameter("registerPostalCode"); 
+		String zip = request.getParameter("registerPostalCode");
 		String country = request.getParameter("registerCountry");
 		String phone = request.getParameter("registerPhone");
 		String email = request.getParameter("email");
