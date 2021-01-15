@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core" 
+		  xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+	<jsp:directive.page contentType="text/html; charset=ISO-8859-1" 
+		pageEncoding="ISO-8859-1" session="true"/>
+	<jsp:output doctype-root-element="html"
+		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+		omit-xml-declaration="true" />	
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>User</title>
+	<link rel="StyleSheet" href="${pageContext.request.contextPath}/res/misStyle.css" 
+	      type="text/css" title="cse4413" media="screen, print" />
+	<script type="text/javascript"
+		  src="${pageContext.request.contextPath}/res/misScript.js">;</script>
+</head>
+<body>
+	<div class="container">
+		<div class="logo-title">
+			<img src="${pageContext.request.contextPath}/images/003.png"/>
+		</div>
+		<div class="site-title"> 
+			<a href="${pageContext.request.contextPath}/Mis">Medical Information System</a>
+		</div>
+		<div class="login-logout">
+			<c:choose>
+				<c:when test="${isLogged}">
+					<form action="Mis" method="POST">
+						<button name="logoutNav" id="logoutNav" value="true">Logout</button>
+					</form>
+				</c:when>
+				<c:otherwise>
+					<form action="Mis" method="POST">
+						<button name="loginNav" id="loginNav" value="true">Login</button>
+					</form>
+				</c:otherwise>
+			</c:choose>
+		</div>
+	</div>
+	<div class="patients">
+		<p>First Name: ${patient.firstName}</p>
+		<p>Last Name: ${patient.lastName}</p>
+		<p>Address:</p>
+		<p>Street: ${patient.address.street}</p>
+		<p>City: ${patient.address.city}</p>
+		<p>Province: ${patient.address.province}</p>
+		<p>Postal Code: ${patient.address.zip}</p>
+		<p>Country: ${patient.address.country}</p>
+		<p>Email: ${patient.email}</p>
+		<p>Phone: ${patient.phone}</p>			
+	</div>
+	<div class="logo-bottom">
+			<img src="${pageContext.request.contextPath}/images/005.jpg"/>
+	</div>
+</body>
+</html>
+</jsp:root>
