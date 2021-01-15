@@ -52,7 +52,7 @@ public class Mis extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String loginNav = request.getParameter("loginNav");
+		String loginNav = request.getParameter("loginNav"); 
 		String loginButton = request.getParameter("login-button");
 		String logoutButton = request.getParameter("logoutNav");
 		String createAccountButton = request.getParameter("createAccountButton");
@@ -81,7 +81,7 @@ public class Mis extends HttpServlet {
 				createAccount(request);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e.printStackTrace(); 
 			}
 			request.setAttribute("isFailedSignup", isFailedSignup);
 			
@@ -113,7 +113,7 @@ public class Mis extends HttpServlet {
 			e.printStackTrace();
 		}
 		request.setAttribute("patients", patients);
-		return patients;
+		return patients; 
 	}
 	
 	private List<UserBean> getUsers(){
@@ -158,7 +158,7 @@ public class Mis extends HttpServlet {
 		String street = street1 + "\n" + street2;
 		String city = request.getParameter("registerCity");
 		String province = request.getParameter("registerProvince");
-		String zip = request.getParameter("registerPostalCode");
+		String zip = request.getParameter("registerPostalCode"); 
 		String country = request.getParameter("registerCountry");
 		String phone = request.getParameter("registerPhone");
 		String email = request.getParameter("email");

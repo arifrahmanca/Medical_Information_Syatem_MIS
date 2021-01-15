@@ -1,14 +1,13 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import bean.AddressBean;
@@ -16,13 +15,25 @@ import bean.PatientBean;
 
 public class PatientDAO {
 	private DataSource ds;
+	Connection con;
+	String url = "jdbc:db2://dashdb-txn-sbox-yp-dal09-08.services.dal.bluemix.net:50000/BLUDB";
+	String user = "sgr65162";
+	String password = "7-z7882xkzvpmxth";
 
-	public PatientDAO() throws ClassNotFoundException {
+	public PatientDAO() throws ClassNotFoundException {		
 		try {
-			ds = (DataSource) (new InitialContext()).lookup("java:/comp/env/jdbc/EECS");
-		} catch (NamingException e) {
+			// Load the IBM Data Server Driver for JDBC and SQLJ with DriverManager
+			Class.forName("com.ibm.db2.jcc.DB2Driver");
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+		
+		// Create Connection
+		try {
+			con = DriverManager.getConnection(url, user, password);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
 	}
 	
 	public DataSource getDS() {
@@ -31,7 +42,6 @@ public class PatientDAO {
 	
 	public AddressBean retrieveAddressById(int id) throws SQLException {
 		String query = "SELECT * FROM ADDRESS WHERE ID=" + id;
-		Connection con = this.ds.getConnection();
 		PreparedStatement p = con.prepareStatement(query);
 		ResultSet r = p.executeQuery();		
 		AddressBean address = null;
@@ -47,14 +57,12 @@ public class PatientDAO {
 		
 		r.close();
 		p.close();
-		con.close();
 		return address;
 	}
 
 	public List<PatientBean> retrieveAllPatients() throws SQLException {
 		String query = "SELECT * FROM PATIENT";
 		List<PatientBean> patients = new ArrayList<PatientBean>();
-		Connection con = this.ds.getConnection();
 		PreparedStatement p = con.prepareStatement(query);
 		ResultSet r = p.executeQuery();
 
@@ -71,15 +79,12 @@ public class PatientDAO {
 		}
 		r.close();
 		p.close();
-		con.close();
 		return patients;
 	}
 	
 	public int insertAddress(String street, String city, String province, String zip, String country) throws SQLException {
 		AddressBean.incrementAddressID();
 		String query = "INSERT INTO ADDRESS (STREET, CITY, PROVINCE, ZIP, COUNTRY) VALUES (?,?,?,?,?)";
-			
-		Connection con = (Connection) this.ds.getConnection();
 		PreparedStatement p = con.prepareStatement(query);
 			
 		p.setString(1, street);
@@ -88,15 +93,12 @@ public class PatientDAO {
 		p.setString(4, zip);
 		p.setString(5, country);
 			
-		int i = p.executeUpdate();			
-		con.close();			
+		int i = p.executeUpdate();					
 		return i;
 	}
 
 	public int insertPatient(String lName, String fName, String phone, String email) throws SQLException {
 		String query = "INSERT INTO PATIENT (LNAME, FNAME, PHONE, EMAIL, ADDRESSID) VALUES (?,?,?,?,?)";
-			
-		Connection con = (Connection) this.ds.getConnection();
 		PreparedStatement p = con.prepareStatement(query);
 		int addressId = AddressBean.getAddressID();
 		
@@ -106,9 +108,7 @@ public class PatientDAO {
 		p.setString(4, phone);
 		p.setInt(5, addressId);
 			
-		int i = p.executeUpdate();			
-		con.close();	
-		
+		int i = p.executeUpdate();				
 		return i;
 	}
 }
