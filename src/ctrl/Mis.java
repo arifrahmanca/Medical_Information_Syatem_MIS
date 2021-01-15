@@ -59,20 +59,28 @@ public class Mis extends HttpServlet {
 		loginUsername = request.getParameter("login-user-name");
 		loginPassword = request.getParameter("login-password");
 		
-		if (logoutButton != null) {
-			isLogged = false;
-			isLoginFailed = true;
-		} 
-		
 		// Redirection to corresponding pages
 		if (loginNav != null) {
 			request.getRequestDispatcher("/Login.jspx").forward(request, response);
-		} else if (loginButton != null) {
+		} else if (logoutButton != null) {
+			isLogged = false;
+			isLoginFailed = true;
+			request.getRequestDispatcher("/index.jspx").forward(request, response);
+		}
+		else if (loginButton != null) {
 			validateLogin();
 			request.setAttribute("isLogged", isLogged);
 			request.setAttribute("isLoginFailed", isLoginFailed);
+			PatientBean patient = null;
 			if (isLogged) {
-				request.getRequestDispatcher("/index.jspx").forward(request, response);
+				String username = request.getParameter("login-user-name"); 
+				try {
+					patient = model.retrieveUserInfo(username);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				request.setAttribute("patient", patient);
+				request.getRequestDispatcher("/UserPage.jspx").forward(request, response);
 			} else {
 				request.getRequestDispatcher("/Login.jspx").forward(request, response);
 			}
@@ -80,12 +88,11 @@ public class Mis extends HttpServlet {
 			try {
 				createAccount(request);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace(); 
 			}
 			request.setAttribute("isFailedSignup", isFailedSignup);
 			
-			if (isFailedSignup) {
+			if (isFailedSignup) { 
 				request.getRequestDispatcher("/SignUp.jspx").forward(request, response);
 			} else {
 				request.getRequestDispatcher("/Login.jspx").forward(request, response);
@@ -104,7 +111,7 @@ public class Mis extends HttpServlet {
 		doGet(request, response);
 	}
 	
-	private List<PatientBean> getPatients(HttpServletRequest request) {
+	private List<PatientBean> getPatients() {
 		List<PatientBean> patients = new ArrayList<PatientBean>();
 		try {
 			patients = model.getAllPatients();
@@ -112,7 +119,6 @@ public class Mis extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		request.setAttribute("patients", patients);
 		return patients;
 	}
 	
@@ -122,7 +128,7 @@ public class Mis extends HttpServlet {
 			users = model.retrieveAllUsers();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace(); 
 		}
 		return users;
 	}
