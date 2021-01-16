@@ -28,7 +28,11 @@
 			<c:choose>
 				<c:when test="${isLogged}">
 					<form action="Mis" method="POST">
-						<button name="logoutNav" id="logoutNav" value="true">Logout</button>
+						<button name="profileButton" id="profileButton" value="true">Profile</button>
+						<button name="logoutNav" id="logoutNav" value="true">Logout</button>						
+					</form>
+					<form action="Mis" method="POST">
+					
 					</form>
 				</c:when>
 				<c:otherwise>
