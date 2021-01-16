@@ -8,11 +8,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ibm.db2.cmx.runtime.internal.repository.api.DataManager;
-
+import bean.PatientBean;
 import bean.UserBean;
 
 public class UserDAO {
+	private PatientDAO patientData;
 	private Connection con;
 	private String url = "jdbc:db2://dashdb-txn-sbox-yp-dal09-08.services.dal.bluemix.net:50000/BLUDB";
 	private String user = "sgr65162";
@@ -32,6 +32,13 @@ public class UserDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} 
+		
+		try {
+			patientData = new PatientDAO();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.getMessage();
+		}
 	}
 	
 	public List<UserBean> retrieveAllUsers() throws SQLException {
@@ -50,6 +57,19 @@ public class UserDAO {
 		r.close();
 		p.close();
 		return users;
+	}
+	
+	public PatientBean retriveUserInfo(String username) throws SQLException {
+		String query = "SELECT * FROM USERS WHERE USERNAME='" + username + "'";
+		PreparedStatement p = con.prepareStatement(query);
+		ResultSet r = p.executeQuery();
+		
+		int id = 0;
+		while (r.next()) {
+			 id = r.getInt("ID");
+		}
+		PatientBean patient = patientData.retrievePatientById(id);
+		return patient;
 	}
 	
 	public int insertUser(String username, String password) throws SQLException {

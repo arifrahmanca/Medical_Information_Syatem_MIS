@@ -66,7 +66,7 @@ public class PatientDAO {
 			String firstName = r.getString("FNAME");
 			String email = r.getString("EMAIL");
 			String phone = r.getString("PHONE");
-			int id = r.getInt("ADDRESSID");
+			int id = r.getInt("ID");
 			AddressBean address = retrieveAddressById(id);
 	
 			PatientBean pb = new PatientBean(lastName, firstName, email, phone, address);
@@ -75,6 +75,31 @@ public class PatientDAO {
 		r.close();
 		p.close();
 		return patients;
+	}
+	
+	public PatientBean retrievePatientById(int id) throws SQLException {
+		String query = "SELECT * FROM PATIENT WHERE ID=" + id;
+		PreparedStatement p = con.prepareStatement(query);
+		ResultSet r = p.executeQuery();
+		
+		String lastName = "";
+		String firstName = "";
+		String email = "";
+		String phone = "";
+		AddressBean address = null;;
+		
+		while (r.next()) {
+			lastName = r.getString("LNAME");
+			firstName = r.getString("FNAME");
+			email = r.getString("EMAIL");
+			phone = r.getString("PHONE");
+			address = retrieveAddressById(id);
+		}
+		PatientBean patient = new PatientBean(lastName, firstName, email, phone, address);
+		
+		r.close();
+		p.close();
+		return patient;
 	}
 	
 	public int insertAddress(String street, String city, String province, String zip, String country) throws SQLException {

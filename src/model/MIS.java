@@ -43,4 +43,8 @@ public class MIS {
 	public UserDAO getUserData() {
 		return userData;
 	}
+	
+	public PatientBean retrieveUserInfo(String username) throws SQLException {
+		return userData.retriveUserInfo(username);
+	}
 }

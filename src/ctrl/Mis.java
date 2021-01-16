@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import bean.PatientBean;
 import bean.UserBean;
@@ -24,8 +26,6 @@ public class Mis extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MIS model;
 	
-	private String loginUsername; 
-    private String loginPassword;
     boolean isLogged = false;
     boolean isLoginFailed = true;
     boolean isFailedSignup = false;
@@ -55,31 +55,33 @@ public class Mis extends HttpServlet {
 		String loginNav = request.getParameter("loginNav"); 
 		String loginButton = request.getParameter("login-button");
 		String logoutButton = request.getParameter("logoutNav");
+		String username = request.getParameter("login-user-name"); 
 		String createAccountButton = request.getParameter("createAccountButton");
-		loginUsername = request.getParameter("login-user-name");
-		loginPassword = request.getParameter("login-password");
+		String profileButton = request.getParameter("profileButton");
+		
+		HttpSession session = request.getSession();
+		
+		if (logoutButton != null) {
+			isLogged = false;
+			isLoginFailed = true;
+		}
+		request.setAttribute("isLogged", isLogged);
 		
 		// Redirection to corresponding pages
 		if (loginNav != null) {
 			request.getRequestDispatcher("/Login.jspx").forward(request, response);
-		} else if (logoutButton != null) {
-			isLogged = false;
-			isLoginFailed = true;
-			request.getRequestDispatcher("/index.jspx").forward(request, response);
-		}
-		else if (loginButton != null) {
-			validateLogin();
+		} else if (loginButton != null) {
+			validateLogin(username);
 			request.setAttribute("isLogged", isLogged);
 			request.setAttribute("isLoginFailed", isLoginFailed);
 			PatientBean patient = null;
-			if (isLogged) {
-				String username = request.getParameter("login-user-name"); 
+			if (isLogged) { 
 				try {
 					patient = model.retrieveUserInfo(username);
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-				request.setAttribute("patient", patient);
+				session.setAttribute("patient", patient);
 				request.getRequestDispatcher("/UserPage.jspx").forward(request, response);
 			} else {
 				request.getRequestDispatcher("/Login.jspx").forward(request, response);
@@ -97,8 +99,9 @@ public class Mis extends HttpServlet {
 			} else {
 				request.getRequestDispatcher("/Login.jspx").forward(request, response);
 			}
-		}
-		else {
+		} else if (profileButton != null) {
+			request.getRequestDispatcher("/UserPage.jspx").forward(request, response);
+		} else {
 			request.getRequestDispatcher("/index.jspx").forward(request, response);
 		}
 	}
@@ -107,7 +110,6 @@ public class Mis extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 	
@@ -116,7 +118,6 @@ public class Mis extends HttpServlet {
 		try {
 			patients = model.getAllPatients();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return patients;
@@ -127,20 +128,15 @@ public class Mis extends HttpServlet {
 		try {
 			users = model.retrieveAllUsers();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace(); 
 		}
 		return users;
 	}
 	
-	private void validateLogin() {
-		List<UserBean> users = getUsers();
-		UserBean user = new UserBean(loginUsername, loginPassword);
-		for (UserBean ub : users) {
-			if (user.getUsername().equals(ub.getUsername()) && user.getPassword().equals(ub.getPassword())) {
-				isLoginFailed = false;
-				isLogged = true;
-			}
+	private void validateLogin(String username) {
+		if (isUserExist(username)) {
+			isLoginFailed = false;
+			isLogged = true;
 		}
 	}
 	
