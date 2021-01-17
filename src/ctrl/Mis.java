@@ -29,6 +29,7 @@ public class Mis extends HttpServlet {
     boolean isLogged = false;
     boolean isLoginFailed = true;
     boolean isFailedSignup = false;
+    boolean isPasswordMismatched = false;
     
     /**
      * @see HttpServlet#HttpServlet()
@@ -82,7 +83,7 @@ public class Mis extends HttpServlet {
 					e.printStackTrace();
 				}
 				session.setAttribute("patient", patient);
-				request.getRequestDispatcher("/UserPage.jspx").forward(request, response);
+				request.getRequestDispatcher("/ProfilePage.jspx").forward(request, response);
 			} else {
 				request.getRequestDispatcher("/Login.jspx").forward(request, response);
 			}
@@ -93,14 +94,15 @@ public class Mis extends HttpServlet {
 				e.printStackTrace(); 
 			}
 			request.setAttribute("isFailedSignup", isFailedSignup);
+			request.setAttribute("isPasswordMismatched", isPasswordMismatched);
 			
-			if (isFailedSignup) { 
+			if (isFailedSignup || isPasswordMismatched) { 
 				request.getRequestDispatcher("/SignUp.jspx").forward(request, response);
 			} else {
 				request.getRequestDispatcher("/Login.jspx").forward(request, response);
 			}
 		} else if (profileButton != null) {
-			request.getRequestDispatcher("/UserPage.jspx").forward(request, response);
+			request.getRequestDispatcher("/ProfilePage.jspx").forward(request, response);
 		} else {
 			request.getRequestDispatcher("/index.jspx").forward(request, response);
 		}
@@ -153,6 +155,7 @@ public class Mis extends HttpServlet {
 	private void createAccount(HttpServletRequest request) throws SQLException {
 		String registerUsername = request.getParameter("registerUsername");
 		String registerPassword = request.getParameter("registerPassword");
+		String retypePassword = request.getParameter("retype-password");
 		String firstName = request.getParameter("registerFirstName");
 		String lastName = request.getParameter("registerLastName");
 		String street1 = request.getParameter("registerStreet");
@@ -167,8 +170,13 @@ public class Mis extends HttpServlet {
 		
 		if (isUserExist(registerUsername)) {
 			isFailedSignup = true;
+			isPasswordMismatched = false;
+		} else if (!registerPassword.equals(retypePassword)) {
+			isPasswordMismatched = true;
+			isFailedSignup = false;
 		} else {
 			isFailedSignup = false;
+			isPasswordMismatched = false;
 			model.getPatientData().insertPatient(firstName, lastName, phone, email);
 			model.getUserData().insertUser(registerUsername, registerPassword);
 			model.getPatientData().insertAddress(street, city, province, zip, country);
