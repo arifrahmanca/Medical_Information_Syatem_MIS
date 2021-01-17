@@ -14,88 +14,73 @@
 	<LINK rel="StyleSheet" href="${pageContext.request.contextPath}/res/misStyle.css" type="text/css" title="cse4413" media="screen,print"/>
 	<SCRIPT type="text/javascript">
 function validateRegistration() {
-	var ok = true;
-	var username = document.getElementById('registerUsername').value;
-	
+	var username = document.getElementById('registerUsername').value;	
 	if (username == ""){
 		alert("Error! Username cannot be empty.");
-		ok = false;
-	}
-	if (!ok) {
 		return false;
 	}
 	
-	var password = document.getElementById('registerPassword').value;
-	
+	var password = document.getElementById('registerPassword').value;	
 	if (password == ""){
 		alert("Error! Password cannot be empty.");
-		ok = false;
+		return false;
 	}
-	if (!ok) {
+	
+	var retypePassword = document.getElementById('retype-password').value;
+	if (retypePassword == ""){
+		alert("Error! Please re-type password.");
 		return false;
 	}
 	
 	var registerFirstName = document.getElementById('registerFirstName').value;
 	if (registerFirstName == ""){
 		alert("Error! First Name cannot be empty.");
-		ok = false;
-	}
-	if (!ok) {
 		return false;
 	}
 	
 	var registerLastName = document.getElementById('registerLastName').value;
 	if (registerLastName == ""){
 		alert("Error! Last Name cannot be empty.");
-		ok = false;
-	}
-	if (!ok) {
 		return false;
 	}
 	
 	var registerStreet = document.getElementById('registerStreet').value;
 	if (registerStreet == ""){
 		alert("Error! Street Number cannot be empty.");
-		ok = false;
-	}
-	if (!ok) {
 		return false;
 	}
 	
 	var registerCity = document.getElementById('registerCity').value;
 	if (registerCity == ""){
 		alert("Error! City cannot be empty.");
-		ok = false;
-	}
-	if (!ok) {
-		return false;
+		return false;e;
 	}
 	
 	var registerProvince = document.getElementById('registerProvince').value;
 	if (registerProvince == ""){
 		alert("Error! Province cannot be empty.");
-		ok = false;
-	}
-	if (!ok) {
 		return false;
 	}
 	
 	var registerPostalCode = document.getElementById('registerPostalCode').value;
 	if (registerPostalCode == ""){
 		alert("Error! Postal Code cannot be empty.");
-		ok = false;
-	}
-	if (!ok) {
 		return false;
 	}
 	
 	var registerCountry = document.getElementById('registerCountry').value;
 	if (registerCountry == "Select Country"){
 		alert("Error! Please select a country from the list.");
-		ok = false;
+		return false;
 	}
 	
-	return ok;
+	var email = document.getElementById('email').value;
+	if (email == ""){
+		alert("Error! E-mail cannot be empty.");
+		return false;
+	}
+	
+	return true;
 }
 </SCRIPT>
 <STYLE type="text/css">
@@ -119,6 +104,7 @@ function validateRegistration() {
 		.sign-up input {
 			height: 25px;
 			margin-left: 10px;
+			margin-top: 5px;
 		}
 		
 		.sign-up select {
@@ -130,6 +116,23 @@ function validateRegistration() {
 		
 		.sign-up label {
 			margin-left: 10px;
+		}
+		
+		.password input,
+		.retype input,
+		.username input {
+			width: 162px;
+		}
+		
+		.password input {
+			margin-left: 12px;
+		}
+		
+		.address {
+			margin-top: 20px;
+			font-weight: bold;
+			margin-left: 10px;
+			font-size: 20px;
 		}
 		
 		.fName {
@@ -146,27 +149,25 @@ function validateRegistration() {
 			width: 250px;
 		}
 		
-		.address {
+		.street {
 			margin-top: 70px;
 		}
 		
-		.address input {
+		.street input {
 			width: 550px;
 		}
 		
 		.city, .province, .postalCode {
 			display: inline-block;
 		}	
-	
-		.country {
-			float: left;
-		}
 		
-		.phone {
-			float: right;
-			margin-right: 120px;
+		.province input,
+		.province label,
+		.postalCode input,
+		.postal code label {
+			margin-left: 17px;
 		}
-		
+				
 		.phone input {
 			margin-top: 2px;
 		}
@@ -176,13 +177,35 @@ function validateRegistration() {
 			margin-top: 25px;
 		}
 		
+		.email label {
+			margin-left: 29px;
+		}
+		
 		.email input {
-			margin-left: 20px;
+			margin-left: 10px;
 			width: 180px;
 		}
+		
+		.phone, .email,
+		.password, .retype {
+			display: inline;
+		}
+		
 		.createAccountButton {
-			width: 550px;
-			height: 40px;
+			border-radius: 3px;
+   			background-color:  #00cccc;
+    		color: #e60000;
+    		border: white;
+    		display:block;
+    		text-align: center;
+    		-webkit-transition-duration: 0.4s;
+    		transition-duration: 0.4s;
+    		margin: 16px auto !important;
+    		text-decoration: none;
+    		font-family: inherit;
+    		font-weight: bold;
+			width: 555px;
+			height: 50px;
 		}	
 		
 		.failedSignup {
@@ -191,6 +214,13 @@ function validateRegistration() {
 			color: red;
 			font-size: 20px;
 		}	
+		
+		.mismatched {
+			color: red;
+			font-weight: bold;
+			margin-left: 10px;
+			margin-top: 15px;'
+		}
 </STYLE>
 
 <title>Sign Up</title>
@@ -229,11 +259,26 @@ function validateRegistration() {
 							<p class="failedSignup">Username already exists. Please select another username.</p><br/>
 						</c:when>
 					</c:choose>
-					<label for="username">Username<small>*</small></label>
-					<input type="text" name="registerUsername" id="registerUsername"></input>
-					<label for="password">Password<small>*</small></label>
-					<input type="password" name="registerPassword" id="registerPassword"></input><br/><br/>
-					<p style="font-weight: bold; margin-left: 10px;">Address Details:</p><br/>
+					<p class="username">
+						<label for="username">Username<small>*</small></label>
+						<input type="text" name="registerUsername" id="registerUsername"></input>
+					</p><br/><br/>
+					<p class="password">
+						<label for="password">Password<small>*</small></label>
+						<input type="password" name="registerPassword" id="registerPassword"></input>
+					</p>
+					<p class="retype">
+						<label for="retype-password">Re-type Password<small>*</small></label>
+						<input type="password" name="retype-password" id="retype-password"></input>
+					</p>
+					<c:choose>
+						<c:when test="${isPasswordMismatched}">
+							<p class="mismatched">*Password did not match</p>
+						</c:when>
+					</c:choose>
+					<p class="address">
+						Address Details:
+					</p><br/>
 					<p class="fName">
 						<label for="firstname">First Name<small>*</small></label><br/>
 						<input type="text" name="registerFirstName" id="registerFirstName"></input>
@@ -242,7 +287,7 @@ function validateRegistration() {
 						<label for="lastname">Last Name<small>*</small></label><br/>
 						<input type="text" name="registerLastName" id="registerLastName"></input>
 					</p>
-					<p class="address">
+					<p class="street">
 						<label for="streetNumber">Address (Street Number)<small>*</small></label><br/>
 						<input type="text" name="registerStreet" id="registerStreet"></input><br/><br/>
 						<label for="username">Address Line 2</label><br/>
@@ -274,11 +319,11 @@ function validateRegistration() {
 						</select>
 					</p>
 					<p class="phone"><br/>
-						<label for="phone">Phone Number</label><br/>
+						<label for="phone">Phone Number</label>
 						<input type="text" name="registerPhone" id="registerPhone"></input>
 					</p>
 					<p class="email">
-						<label for="email">E-mail:</label>
+						<label for="email">E-mail<small>*</small></label>
 						<input type="text" name="email" id="email"></input>
 					</p><br/>
 					<button name="createAccountButton" id="createAccountButton" value="true" class="createAccountButton">Create Account</button>

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core" 
+		  xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+	<jsp:directive.page contentType="text/html; charset=ISO-8859-1" 
+		pageEncoding="ISO-8859-1" session="true"/>
+	<jsp:output doctype-root-element="html"
+		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+		omit-xml-declaration="true" />	
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>User</title>
+	<link rel="StyleSheet" href="${pageContext.request.contextPath}/res/misStyle.css" 
+	      type="text/css" title="cse4413" media="screen, print" />
+	<script type="text/javascript"
+		  src="${pageContext.request.contextPath}/res/misScript.js">;</script>
+	<style>
+		.profile-wrapper {
+			margin-top: 50px;
+			margin-left: 150px;
+		}
+		
+		.profile-header,
+		.profile-address {
+			width: 1050px;
+			height: 60px;
+			background-color: #00cccc;
+			align-content:center; 
+			margin-top: 30px;
+		}
+		
+		.profile-header p,
+		.profile-address p {
+			text-align: center;
+			font-weight: bold;
+			font-size: 25px;
+			color: #e60000;
+		}
+		
+		.profile-info {
+			margin-top: 20px;
+		}
+		
+		.profile-attribute {
+			width: 500px;
+			height: 50px;
+			background-color: #0099cc;
+			display: inline-block;
+		}
+		
+		.profile-attribute p {
+			text-align: right;
+			font-weight: bold;
+			font-size: 20px;
+			color: #12161a;
+			margin-right: 10px;
+		}
+		
+		.profile-value {
+			margin-left: 50px;
+			width: 500px;
+			height: 50px;
+			background-color: #0099cc;
+			display: inline-block;
+		}
+		
+		.profile-value p {
+			margin-left: 10px;
+			font-weight: bold;
+			font-size: 20px;
+			color: #12161a;
+		}
+		
+		.profile-update {
+			margin-bottom: 50px;
+			margin-top: 30px;
+		}
+		
+		.profile-update button {
+			border-radius: 3px;
+   			background-color:  #00cccc;
+    		color: #e60000;
+    		border: white;
+    		display:block;
+    		text-align: center;
+    		-webkit-transition-duration: 0.4s;
+    		transition-duration: 0.4s;
+    		margin: 16px auto !important;
+    		text-decoration: none;
+    		font-family: inherit;
+    		font-weight: bold;
+    		font-size: 25px;
+    		cursor: pointer;
+    		width: 1050px;
+    		height: 60px;
+		}
+		.profile-update button:hover {
+			background-color:#0099cc; 
+			color: white;
+		}
+}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="logo-title">
+			<img src="${pageContext.request.contextPath}/images/003.png"/>
+		</div>
+		<div class="site-title"> 
+			<a href="${pageContext.request.contextPath}/Mis">Medical Information System</a>
+		</div>
+		<div class="login-logout">
+			<c:choose>
+				<c:when test="${isLogged}">
+					<form action="Mis" method="POST">
+						<button name="profileButton" id="profileButton" value="true">Profile</button>
+						<button name="logoutNav" id="logoutNav" value="true">Logout</button>						
+					</form>
+					<form action="Mis" method="POST">
+					
+					</form>
+				</c:when>
+				<c:otherwise>
+					<form action="Mis" method="POST">
+						<button name="loginNav" id="loginNav" value="true">Login</button>
+					</form>
+				</c:otherwise>
+			</c:choose>
+		</div>
+	</div>
+	<div class="profile-wrapper">		
+		<div class="profile-header"><br/>			
+			<p>Personal Information</p>
+		</div>
+		<div class="profile-info">
+			<div class="profile-attribute"><br/>
+				<p>First Name:</p>
+			</div>
+			<div class="profile-value"><br/>	
+				<p>${patient.firstName}</p>	
+			</div>
+		</div>
+		<div class="profile-info">
+			<div class="profile-attribute"><br/>
+				<p>Last Name:</p>
+			</div>
+			<div class="profile-value"><br/>	
+				<p>${patient.lastName}</p>	
+			</div>
+		</div>
+		<div class="profile-info">
+			<div class="profile-attribute"><br/>
+				<p>E-mail:</p>
+			</div>
+			<div class="profile-value"><br/>	
+				<p>${patient.email}</p>	
+			</div>
+		</div>
+		<div class="profile-info">
+			<div class="profile-attribute"><br/>
+				<p>Phone:</p>
+			</div>
+			<div class="profile-value"><br/>	
+				<p>${patient.phone}</p>	
+			</div>
+		</div>
+		<div class="profile-address"><br/>
+			<p>Address</p>
+		</div>
+		<div class="profile-info">
+			<div class="profile-attribute"><br/>
+				<p>Street:</p>
+			</div>
+			<div class="profile-value"><br/>	
+				<p>${patient.address.street}</p>	
+			</div>
+		</div>
+		<div class="profile-info">
+			<div class="profile-attribute"><br/>
+				<p>City:</p>
+			</div>
+			<div class="profile-value"><br/>	
+				<p>${patient.address.city}</p>	
+			</div>
+		</div>
+		<div class="profile-info">
+			<div class="profile-attribute"><br/>
+				<p>Province:</p>
+			</div>
+			<div class="profile-value"><br/>	
+				<p>${patient.address.province}</p>	
+			</div>
+		</div>
+		<div class="profile-info">
+			<div class="profile-attribute"><br/>
+				<p>Postal Code:</p>
+			</div>
+			<div class="profile-value"><br/>	
+				<p>${patient.address.zip}</p>	
+			</div>
+		</div>
+		<div class="profile-info">
+			<div class="profile-attribute"><br/>
+				<p>Country:</p>
+			</div>
+			<div class="profile-value"><br/>	
+				<p>${patient.address.country}</p>	
+			</div>
+		</div>		
+	</div>
+	<div class="profile-update">
+			<button name="updateButton" id="updateButton" value="true">Update Profile</button>
+	</div>
+	<div class="logo-bottom">
+			<img src="${pageContext.request.contextPath}/images/005.jpg"/>
+	</div>
+</body>
+</html>
+</jsp:root>
