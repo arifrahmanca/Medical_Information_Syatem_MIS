@@ -47,7 +47,7 @@ public class PatientDAO {
 			String province = r.getString("PROVINCE"); 
 			String zip = r.getString("ZIP");
 			String country = r.getString("COUNTRY"); 
-			address = new AddressBean(street, city, province, zip, country);
+			address = new AddressBean(id, street, city, province, zip, country);
 		}
 		
 		r.close();
@@ -69,7 +69,7 @@ public class PatientDAO {
 			int id = r.getInt("ID");
 			AddressBean address = retrieveAddressById(id);
 	
-			PatientBean pb = new PatientBean(lastName, firstName, email, phone, address);
+			PatientBean pb = new PatientBean(id, lastName, firstName, email, phone, address);
 			patients.add(pb);
 		}
 		r.close();
@@ -95,7 +95,7 @@ public class PatientDAO {
 			phone = r.getString("PHONE");
 			address = retrieveAddressById(id);
 		}
-		PatientBean patient = new PatientBean(lastName, firstName, email, phone, address);
+		PatientBean patient = new PatientBean(id, lastName, firstName, email, phone, address);
 		
 		r.close();
 		p.close();
@@ -126,6 +126,34 @@ public class PatientDAO {
 		p.setString(4, email);
 			
 		int i = p.executeUpdate();	
+		return i;
+	}
+	
+	public int updatePatient(String email, String phone, int id) throws SQLException {
+		String query = "UPDATE PATIENT SET EMAIL=?, PHONE=? WHERE ID=?";
+		
+		PreparedStatement p = con.prepareStatement(query);
+		
+		p.setString(1, email);
+		p.setString(2, phone);
+		p.setInt(3, id);
+			
+		int i = p.executeUpdate();	
+		return i;
+	}
+	
+	public int updateAddress(String street, String city, String province, String zip, String country, int id) throws SQLException {
+		String query = "UPDATE ADDRESS SET STREET=?, CITY=?, PROVINCE=?, ZIP=?, COUNTRY=? WHERE ID=?";
+		PreparedStatement p = con.prepareStatement(query);
+			
+		p.setString(1, street);
+		p.setString(2, city);
+		p.setString(3, province);
+		p.setString(4, zip);
+		p.setString(5, country);
+		p.setInt(6, id);
+			
+		int i = p.executeUpdate();
 		return i;
 	}
 }

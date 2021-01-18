@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
+import bean.AddressBean;
 import bean.PatientBean;
 import bean.UserBean;
 import model.MIS;
@@ -59,6 +61,8 @@ public class Mis extends HttpServlet {
 		String username = request.getParameter("login-user-name"); 
 		String createAccountButton = request.getParameter("createAccountButton");
 		String profileButton = request.getParameter("profileButton");
+		String updateButton = request.getParameter("updateButton");
+		String saveProfileButton = request.getParameter("saveProfileButton");
 		
 		HttpSession session = request.getSession();
 		
@@ -103,7 +107,18 @@ public class Mis extends HttpServlet {
 			}
 		} else if (profileButton != null) {
 			request.getRequestDispatcher("/ProfilePage.jspx").forward(request, response);
-		} else {
+		} else if (updateButton != null) {
+			request.getRequestDispatcher("/UpdatePage.jspx").forward(request, response);
+		} else if (saveProfileButton != null) {
+			try {
+				updateProfile(request);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace(); 
+			}
+			request.getRequestDispatcher("/ProfilePage.jspx").forward(request, response);
+		}
+		else {
 			request.getRequestDispatcher("/index.jspx").forward(request, response);
 		}
 	}
@@ -115,14 +130,14 @@ public class Mis extends HttpServlet {
 		doGet(request, response);
 	}
 	
-	private List<PatientBean> getPatients() {
-		List<PatientBean> patients = new ArrayList<PatientBean>();
+	private PatientBean getPatientById(int id) {
+		PatientBean patient = null;
 		try {
-			patients = model.getAllPatients();
+			patient = model.getPatientById(id);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return patients;
+		return patient;
 	}
 	
 	private List<UserBean> getUsers(){
@@ -181,5 +196,25 @@ public class Mis extends HttpServlet {
 			model.getUserData().insertUser(registerUsername, registerPassword);
 			model.getPatientData().insertAddress(street, city, province, zip, country);
 		}
+	}
+	
+	private void updateProfile(HttpServletRequest request) throws SQLException {
+		String street = request.getParameter("updateStreet");;
+		String city = request.getParameter("updateCity");
+		String province = request.getParameter("updateProvince");
+		String zip = request.getParameter("updatePostalCode");
+		String country = request.getParameter("updateCountry"); 
+		String phone = request.getParameter("updatePhone");
+		String email = request.getParameter("updateEmail");
+		
+		PatientBean patient = (PatientBean) request.getSession().getAttribute("patient");
+		int id = patient.getId();		
+		AddressBean address = new AddressBean(id, street, city, province, zip, country);
+		
+		model.updatePatient(email, phone, id);
+		model.updateAddress(address);
+		
+		patient = getPatientById(id);
+		request.getSession().setAttribute("patient", patient);
 	}
 }

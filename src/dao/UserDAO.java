@@ -48,10 +48,11 @@ public class UserDAO {
 		ResultSet r = p.executeQuery();
 
 		while (r.next()) {
+			int id = r.getInt("ID");
 			String username = r.getString("USERNAME");
 			String password = r.getString("PASSWORD");
 	
-			UserBean user = new UserBean(username, password);
+			UserBean user = new UserBean(id, username, password);
 			users.add(user);
 		}
 		r.close();

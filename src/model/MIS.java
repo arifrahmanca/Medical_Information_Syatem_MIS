@@ -3,6 +3,7 @@ package model;
 import java.sql.SQLException;
 import java.util.List;
 
+import bean.AddressBean;
 import bean.PatientBean;
 import bean.UserBean;
 import dao.PatientDAO;
@@ -28,6 +29,10 @@ public class MIS {
 	private MIS() {
 	}
 	
+	public PatientBean getPatientById(int id) throws SQLException {
+		return patientData.retrievePatientById(id);
+	}
+	
 	public List<PatientBean> getAllPatients() throws SQLException{
 		return patientData.retrieveAllPatients();
 	}
@@ -46,5 +51,20 @@ public class MIS {
 	
 	public PatientBean retrieveUserInfo(String username) throws SQLException {
 		return userData.retriveUserInfo(username);
+	}
+	
+	public int updatePatient(String email, String phone, int id) throws SQLException {
+		return patientData.updatePatient(email, phone, id);
+	}
+	
+	public int updateAddress(AddressBean address) throws SQLException {
+		String street = address.getStreet();
+		String city = address.getCity();
+		String province = address.getProvince();
+		String zip = address.getZip();
+		String country = address.getCountry();
+		int id = address.getId();
+		
+		return patientData.updateAddress(street, city, province, zip, country, id);
 	}
 }
