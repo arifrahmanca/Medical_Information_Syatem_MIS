@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core" 
+		  xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+	<jsp:directive.page contentType="text/html; charset=ISO-8859-1" 
+		pageEncoding="ISO-8859-1" session="true"/>
+	<jsp:output doctype-root-element="html"
+		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+		omit-xml-declaration="true" />	
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>User</title>
+	<link rel="StyleSheet" href="${pageContext.request.contextPath}/res/misStyle.css" 
+	      type="text/css" title="cse4413" media="screen, print" />
+	<script type="text/javascript"
+		  src="${pageContext.request.contextPath}/res/misScript.js">;</script>
+	<SCRIPT type="text/javascript">
+		function clearEmail() {
+			var email = document.getElementById('updateEmail');
+			email.value= "";
+		}
+		
+		function clearPhone() {
+			var phone = document.getElementById('updatePhone');
+			phone.value= "";
+		}
+		
+		function clearStreet() {
+			var street = document.getElementById('updateStreet');
+			street.value= "";
+		}
+		
+		function clearCity() {
+			var city = document.getElementById('updateCity');
+			city.value= "";
+		}
+		
+		function clearProvince() {
+			var province = document.getElementById('updateProvince');
+			province.value= "";
+		}
+		
+		function clearZip() {
+			var zip = document.getElementById('updatePostalCode');
+			zip.value= "";
+		}
+		
+		function clearCountry() {
+			var country = document.getElementById('updateCountry');
+			country.value= "";
+		}
+	</SCRIPT>
+	<style>
+		.profile-wrapper {
+			margin-top: 50px;
+			margin-left: 150px;
+		}
+		
+		.profile-header,
+		.profile-address {
+			width: 500px;
+			height: 60px;
+			background-color: #00cccc;
+			align-content:center; 
+			margin-top: 30px;
+		}
+		
+		.profile-header p,
+		.profile-address p {
+			text-align: center;
+			font-weight: bold;
+			font-size: 25px;
+			color: #e60000;
+		}
+		
+		.profile-info {
+			margin-top: 20px;
+		}
+		
+		.profile-attribute {			
+			height: 50px;
+			display: inline-block;		
+		}
+		
+		.profile-attribute p {
+			text-align: right;
+			font-weight: bold;
+			font-size: 20px;
+			color: #12161a;
+			margin-right: 10px;
+			margin-left: 50px;
+		}
+		
+		.profile-value { 			
+			height: 50px;
+			display: inline-block;
+		}
+		
+		.profile-value p {
+			margin-left: 10px;
+			font-weight: bold;
+			font-size: 20px;
+			color: #12161a;
+		}
+		
+		.profile-update {		
+			margin-top: 550px;
+		}
+		
+		.profile-update button {
+			border-radius: 3px;
+   			background-color:  #00cccc;
+    		color: #e60000;
+    		border: white;
+    		display:block;
+    		text-align: center;
+    		-webkit-transition-duration: 0.4s;
+    		transition-duration: 0.4s;
+    		margin: 16px auto !important;
+    		text-decoration: none;
+    		font-family: inherit;
+    		font-weight: bold;
+    		font-size: 25px;
+    		cursor: pointer;
+    		width: 1050px;
+    		height: 60px;
+    		margin-top: 30px;
+		}
+		.profile-update button:hover {
+			background-color:#0099cc; 
+			color: white;
+		}
+		
+		.profile-value input {			
+			height: 15px;
+			border: 1px solid black;
+			background: #eee;
+			font-size: 18px;
+			padding: 10px;		
+		}
+		
+		.update-info {
+			float: left;
+		}
+		
+		.update-address {
+			float: right;
+			margin-right: 150px;
+		}	
+		
+		.fName {
+			margin-left: 33px;
+		}
+		
+		.lName {
+			margin-left: 37px;
+		}
+		
+		.email {
+			margin-left: 70px;
+		}	
+		
+		.phone {
+			margin-left: 72px;
+		}
+		
+		.street {
+			margin-left: 70px;
+		}
+		
+		.city {
+			margin-left: 83px;
+		}
+		
+		.province {
+			margin-left: 42px;
+		}
+		
+		.postalCode {
+			margin-left: 14px;
+		}
+		
+		.country {
+			margin-left: 42px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="logo-title">
+			<img src="${pageContext.request.contextPath}/images/003.png"/>
+		</div>
+		<div class="site-title"> 
+			<a href="${pageContext.request.contextPath}/Mis">Medical Information System</a>
+		</div>
+		<div class="login-logout">
+			<c:choose>
+				<c:when test="${isLogged}">
+					<form action="Mis" method="POST">
+						<button name="profileButton" id="profileButton" value="true">Profile</button>
+						<button name="logoutNav" id="logoutNav" value="true">Logout</button>						
+					</form>
+					<form action="Mis" method="POST">
+					
+					</form>
+				</c:when>
+				<c:otherwise>
+					<form action="Mis" method="POST">
+						<button name="loginNav" id="loginNav" value="true">Login</button>
+					</form>
+				</c:otherwise>
+			</c:choose>
+		</div>
+	</div>
+	<form action="Mis" method="POST">
+	<div class="profile-wrapper">
+	<div class="update-info">		
+		<div class="profile-header"><br/>			
+			<p>Update Information</p>
+		</div>
+		<div class="profile-info">
+			<div class="profile-attribute"><br/>
+				<p>First Name:</p>
+			</div>
+			<div class="profile-value"><br/>	
+				<input class="fName" name="updateFirstName" id="updateFirstName" value="${patient.firstName}" disabled="disabled"></input>
+			</div>
+		</div>
+		<div class="profile-info">
+			<div class="profile-attribute"><br/>
+				<p>Last Name:</p>
+			</div>
+			<div class="profile-value"><br/>	
+				<input class="lName" name="updateLastName" id="updateLastName" value="${patient.lastName}" disabled="disabled"></input>
+			</div>
+		</div>
+		<div class="profile-info">
+			<div class="profile-attribute"><br/>
+				<p>E-mail:</p>
+			</div>
+			<div class="profile-value"><br/>	
+				<input class="email" name="updateEmail" id="updateEmail" value="${patient.email}" onclick="clearEmail()"></input>	
+			</div>
+		</div>
+		<div class="profile-info">
+			<div class="profile-attribute"><br/>
+				<p>Phone:</p>
+			</div>
+			<div class="profile-value"><br/>	
+				<input class="phone" name="updatePhone" id="updatePhone" value="${patient.phone}" onclick="clearPhone()"></input>
+			</div>
+		</div>
+	</div>
+	<div class="update-address">
+		<div class="profile-address"><br/>
+			<p>Update Address</p>
+		</div>
+		<div class="profile-info">
+			<div class="profile-attribute"><br/>
+				<p>Street:</p>
+			</div>
+			<div class="profile-value"><br/>	
+				<input class="street" name="updateStreet" id="updateStreet" value="${patient.address.street}" onclick="clearStreet()"></input>	
+			</div>
+		</div>
+		<div class="profile-info">
+			<div class="profile-attribute"><br/>
+				<p>City:</p>
+			</div>
+			<div class="profile-value"><br/>	
+				<input class="city" name="updateCity" id="updateCity" value="${patient.address.city}" onclick="clearCity()"></input>		
+			</div>
+		</div>
+		<div class="profile-info">
+			<div class="profile-attribute"><br/>
+				<p>Province:</p>
+			</div>
+			<div class="profile-value"><br/>	
+				<input class="province" name="updateProvince" id="updateProvince" value="${patient.address.province}" onclick="clearProvince()"></input>		
+			</div>
+		</div>
+		<div class="profile-info">
+			<div class="profile-attribute"><br/>
+				<p>Postal Code:</p>
+			</div>
+			<div class="profile-value"><br/>	
+				<input class="postalCode" name="updatePostalCode" id="updatePostalCode" value="${patient.address.zip}" onclick="clearZip()"></input>		
+			</div>
+		</div>
+		<div class="profile-info">
+			<div class="profile-attribute"><br/>
+				<p>Country:</p>
+			</div>
+			<div class="profile-value"><br/>	
+				<input class="country" name="updateCountry" id="updateCountry" value="${patient.address.country}" onclick="clearCountry()"></input>	
+			</div>
+		</div>
+	</div>	
+	</div>
+	<div class="profile-update">
+			<button name="saveProfileButton" id="saveProfileButton" value="true">Save Profile</button>
+	</div>
+	</form>	
+	<div class="logo-bottom">
+			<img src="${pageContext.request.contextPath}/images/005.jpg"/>
+	</div>
+</body>
+</html>
+</jsp:root>
