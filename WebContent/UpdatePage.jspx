@@ -184,6 +184,13 @@
 		.country {
 			margin-left: 42px;
 		}
+		
+		.updateError {
+			margin-left: 450px;
+			font-weight: bold;;
+			font-size: 20px;
+			color: red;
+		}
 	</style>
 </head>
 <body>
@@ -224,7 +231,7 @@
 				<p>First Name:</p>
 			</div>
 			<div class="profile-value"><br/>	
-				<input class="fName" name="updateFirstName" id="updateFirstName" value="${patient.firstName}" disabled="disabled"></input>
+				<input class="fName" name="updateFirstName" id="updateFirstName" placeholder="${patient.firstName}" disabled="disabled"></input>
 			</div>
 		</div>
 		<div class="profile-info">
@@ -232,7 +239,7 @@
 				<p>Last Name:</p>
 			</div>
 			<div class="profile-value"><br/>	
-				<input class="lName" name="updateLastName" id="updateLastName" value="${patient.lastName}" disabled="disabled"></input>
+				<input class="lName" name="updateLastName" id="updateLastName" placeholder="${patient.lastName}" disabled="disabled"></input>
 			</div>
 		</div>
 		<div class="profile-info">
@@ -240,7 +247,7 @@
 				<p>E-mail:</p>
 			</div>
 			<div class="profile-value"><br/>	
-				<input class="email" name="updateEmail" id="updateEmail" value="${patient.email}" onclick="clearEmail()"></input>	
+				<input class="email" name="updateEmail" id="updateEmail" value="${patient.email}" placeholder="${patient.email}" onclick="clearEmail()"></input>	
 			</div>
 		</div>
 		<div class="profile-info">
@@ -248,7 +255,7 @@
 				<p>Phone:</p>
 			</div>
 			<div class="profile-value"><br/>	
-				<input class="phone" name="updatePhone" id="updatePhone" value="${patient.phone}" onclick="clearPhone()"></input>
+				<input class="phone" name="updatePhone" id="updatePhone" value="${patient.phone}" placeholder="${patient.phone}" onclick="clearPhone()"></input>
 			</div>
 		</div>
 	</div>
@@ -261,7 +268,7 @@
 				<p>Street:</p>
 			</div>
 			<div class="profile-value"><br/>	
-				<input class="street" name="updateStreet" id="updateStreet" value="${patient.address.street}" onclick="clearStreet()"></input>	
+				<input class="street" name="updateStreet" id="updateStreet" value="${patient.address.street}" placeholder="${patient.address.street}" onclick="clearStreet()"></input>	
 			</div>
 		</div>
 		<div class="profile-info">
@@ -269,7 +276,7 @@
 				<p>City:</p>
 			</div>
 			<div class="profile-value"><br/>	
-				<input class="city" name="updateCity" id="updateCity" value="${patient.address.city}" onclick="clearCity()"></input>		
+				<input class="city" name="updateCity" id="updateCity" value="${patient.address.city}" placeholder="${patient.address.city}" onclick="clearCity()"></input>		
 			</div>
 		</div>
 		<div class="profile-info">
@@ -277,7 +284,7 @@
 				<p>Province:</p>
 			</div>
 			<div class="profile-value"><br/>	
-				<input class="province" name="updateProvince" id="updateProvince" value="${patient.address.province}" onclick="clearProvince()"></input>		
+				<input class="province" name="updateProvince" id="updateProvince" value="${patient.address.province}" placeholder="${patient.address.province}" onclick="clearProvince()"></input>		
 			</div>
 		</div>
 		<div class="profile-info">
@@ -285,7 +292,7 @@
 				<p>Postal Code:</p>
 			</div>
 			<div class="profile-value"><br/>	
-				<input class="postalCode" name="updatePostalCode" id="updatePostalCode" value="${patient.address.zip}" onclick="clearZip()"></input>		
+				<input class="postalCode" name="updatePostalCode" id="updatePostalCode" value="${patient.address.zip}" placeholder="${patient.address.zip}" onclick="clearZip()"></input>		
 			</div>
 		</div>
 		<div class="profile-info">
@@ -293,12 +300,17 @@
 				<p>Country:</p>
 			</div>
 			<div class="profile-value"><br/>	
-				<input class="country" name="updateCountry" id="updateCountry" value="${patient.address.country}" onclick="clearCountry()"></input>	
+				<input class="country" name="updateCountry" id="updateCountry" value="${patient.address.country}" placeholder="${patient.address.country}" onclick="clearCountry()"></input>	
 			</div>
 		</div>
 	</div>	
 	</div>
 	<div class="profile-update">
+		<c:choose>
+			<c:when test="${isUpdateError}">
+				<p class="updateError">${updateErrorMsg}</p>
+			</c:when>
+		</c:choose>
 			<button name="saveProfileButton" id="saveProfileButton" value="true">Save Profile</button>
 	</div>
 	</form>	
