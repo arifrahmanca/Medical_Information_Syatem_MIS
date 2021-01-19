@@ -32,6 +32,9 @@ public class Mis extends HttpServlet {
     boolean isLoginFailed = true;
     boolean isFailedSignup = false;
     boolean isPasswordMismatched = false;
+    boolean isUpdateError = false;
+    
+    String updateErrorMsg = "";
     
     /**
      * @see HttpServlet#HttpServlet()
@@ -116,7 +119,11 @@ public class Mis extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace(); 
 			}
-			request.getRequestDispatcher("/ProfilePage.jspx").forward(request, response);
+			if (isUpdateError) {
+				request.getRequestDispatcher("/UpdatePage.jspx").forward(request, response);
+			} else {
+				request.getRequestDispatcher("/ProfilePage.jspx").forward(request, response);
+			}
 		}
 		else {
 			request.getRequestDispatcher("/index.jspx").forward(request, response);
@@ -211,10 +218,31 @@ public class Mis extends HttpServlet {
 		int id = patient.getId();		
 		AddressBean address = new AddressBean(id, street, city, province, zip, country);
 		
-		model.updatePatient(email, phone, id);
-		model.updateAddress(address);
-		
+		if (email == "") {
+			setUpdateErrorMsg("Error! Email cannot be empty.");
+		} else if (street == "") {
+			setUpdateErrorMsg("Error! Street cannot be empty.");
+		} else if (city == "") {
+			setUpdateErrorMsg("Error! City cannot be empty.");
+		} else if (province == "") {
+			setUpdateErrorMsg("Error! Province cannot be empty.");
+		} else if (zip == "") {
+			setUpdateErrorMsg("Error! Postal Code cannot be empty.");
+		} else if (country == "") {
+			setUpdateErrorMsg("Error! Country cannot be empty.");
+		} else {
+			isUpdateError = false;
+			model.updatePatient(email, phone, id);
+			model.updateAddress(address);
+		}		
 		patient = getPatientById(id);
 		request.getSession().setAttribute("patient", patient);
+		request.getSession().setAttribute("isUpdateError", isUpdateError);
+		request.getSession().setAttribute("updateErrorMsg", updateErrorMsg);
+	}
+	
+	private void setUpdateErrorMsg(String msg) {
+		isUpdateError = true;
+		this.updateErrorMsg = msg;
 	}
 }
