@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" 
+		xmlns:c="http://java.sun.com/jsp/jstl/core" 
+		xmlns:f="http://java.sun.com/jsp/jstl/fmt" version="2.0">
+	<jsp:directive.page contentType="text/html; charset=ISO-8859-1" 
+		pageEncoding="ISO-8859-1" session="true"/>
+	<jsp:output doctype-root-element="html"
+		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+		omit-xml-declaration="true" />
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="ISO-8859-1"/>
+	<LINK rel="StyleSheet" href="${pageContext.request.contextPath}/res/misStyle.css" type="text/css" title="cse4413" media="screen,print"/>
+	<SCRIPT type="text/javascript">
+		function showPassword() {
+		  var input = document.getElementById('login-password');
+		  if (input.type == 'password') {
+			    input.type = 'text';
+			  } else {
+				  input.type = 'password';
+			}
+		}
+		
+		function validateLogin() {
+			var ok = true;
+			var username = document.getElementById('login-user-name').value;
+			
+			if (username == ""){
+				alert("Error! Username cannot be empty.");
+				ok = false;
+			}
+			if (!ok) {
+				return false;
+			}
+			
+			var password = document.getElementById('login-password').value;
+			
+			if (password == ""){
+				alert("Error! Password cannot be empty.");
+				ok = false;
+			}
+			return ok;
+		}		
+	</SCRIPT>
+	<STYLE>		
+		.login-page button {
+			border-radius: 3px;
+   			background-color:  #00cccc;
+    		color: #e60000;
+    		border: white;
+    		display:block;
+    		text-align: center;
+    		-webkit-transition-duration: 0.4s;
+    		transition-duration: 0.4s;
+    		margin: 16px auto !important;
+    		text-decoration: none;
+    		font-family: inherit;
+    		font-weight: bold;
+    		width: 260px;
+    		height: 40px;
+		}
+		
+		.login-page button:hover {
+			background-color:#0099cc; 
+			color: white;
+		}	
+		.login-page {
+			margin-top: 50px;
+			margin-left: 525px;
+			width: 300px;
+			display: grid;
+			grid-template-columns: [labels] auto [controls] 1fr [info] 1fr;
+			grid-auto-flow: row;
+			grid-gap: 0.8em;
+			background-color: cornsilk;
+			padding: 0.5em;
+			align-content: center;
+		}
+		
+		.login-page fieldset {
+			width: 280px;
+			margin-left: 8px;
+			margin-bottom: 10px;
+			margin-top: 5px;
+		}
+		
+		.login-page input {
+			height: 25px;
+			margin-top: 5px;
+		}
+		
+		.loginArea {
+			padding: 10px;
+		}
+		
+		.login-input {
+			width: 255px;
+		}
+		
+		.login-page p {
+			margin-bottom: 20px;
+			margin-left: 2px;
+		}
+		
+		.sign-up a {
+			margin-left: 30px;
+			font-weight: bold;
+			font-size: 18px;
+			color: #ff0000;
+		}
+		
+		.login-failed p {
+			font-weight: bold;
+			color: red;
+		}
+	</STYLE>
+
+<title>Admin</title>
+</head>
+<body>
+	<div class="container">
+		<div class="logo-title">
+			<img src="${pageContext.request.contextPath}/images/003.png"/>
+		</div>
+		<div class="site-title"> 
+			<a href="${pageContext.request.contextPath}/Mis">Medical Information System</a>
+		</div>
+		<div class="welcome-msg">
+			<c:choose>
+				<c:when test="${isLogged}">
+					<p>Welcome ${patient.firstName} ${patient.lastName}!</p>
+				</c:when>
+			</c:choose>
+		</div>
+		<div class="login-logout">
+			<c:choose>
+				<c:when test="${isLogged}">
+					<form action="Mis" method="POST">
+						<button name="profileButton" id="profileButton" value="true">Profile</button>
+						<button name="logoutNav" id="logoutNav" value="true">Logout</button>
+					</form>
+				</c:when>
+				<c:otherwise>
+					<form action="Mis" method="POST">
+						<button name="loginNav" id="loginNav" value="true">Login</button>
+					</form>
+				</c:otherwise>
+			</c:choose>
+		</div>
+	</div>
+
+	<div class="login-page">
+			<form action="Mis" method="POST" onsubmit="return validateLogin();">
+				<fieldset>
+				<legend>Login</legend><br/>
+					<div class="loginArea">
+						<c:choose>
+							<c:when test="${isLoginFailed}">
+							<div class="login-failed">
+								<p>Login failed!<br/>
+								   You must provide correct credentials.</p>
+							</div>
+							</c:when>
+						</c:choose>
+						<label for="username"><small>*</small>Admin:</label><br/>
+						<input class="login-input" type="text" name="login-user-name" id="login-user-name"></input><br/><br/>
+						<label for="password"><small>*</small>Password:</label><br/>
+						<input class="login-input" type="password" name="login-password" id="login-password"></input><br/>
+						<input  type="checkbox" onclick="showPassword()"></input>
+						<label style="vertical-align: 40%; margin-left: 5px;">Show Password</label><br/><br/>
+						<button action="submit" name="login-button" id="login-button">Admin Login</button>
+					</div>
+				</fieldset>
+			</form>
+	</div>
+	<div class="logo-bottom">
+			<img src="${pageContext.request.contextPath}/images/005.jpg"/>
+	</div>
+</body>
+</html>
+</jsp:root>
