@@ -103,7 +103,7 @@
 			margin-left: 2px;
 		}
 		
-		.sign-up a {
+		.user-login a {
 			margin-left: 30px;
 			font-weight: bold;
 			font-size: 18px;
@@ -170,6 +170,7 @@
 						<input  type="checkbox" onclick="showPassword()"></input>
 						<label style="vertical-align: 40%; margin-left: 5px;">Show Password</label><br/><br/>
 						<button action="submit" name="login-button" id="login-button">Admin Login</button>
+						<p>Not an Admin?<span class="user-login"><a href="${pageContext.request.contextPath}/Login.jspx">Sign in as User</a></span></p>
 					</div>
 				</fieldset>
 			</form>
